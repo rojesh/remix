@@ -1,5 +1,5 @@
-import { redirect } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { json, redirect } from '@remix-run/node';
+import { Link, useLoaderData, useRouteError } from '@remix-run/react';
 import NewNote, {links as newNoteLinks } from '~/components/NewNote';
 import NoteList, {links as noteListLinks} from '~/Components/NoteList';
 import { getStoredNotes, storeNotes } from '../data/notes';
@@ -43,12 +43,13 @@ export function links() {
 }
 
 
-export function ErrorBoundary({error}) {
+export function ErrorBoundary() {
+  const routeError = useRouteError();
+  const message = routeError.message || 'Oops! Something went wrong.';
   return (
     <main className="error">
       <h1>An error related to your notes occured!</h1>
-      {/* <p>{error.message}</p> */}
-      <p>{error}</p>
+      <p>{message}</p>
       <p>Back to <Link to="/">Safety! </Link></p>
     </main>
   )
